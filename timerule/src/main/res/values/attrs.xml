@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RulerView">
+        <attr name="direction" format="enum">
+            <enum name="vertical" value="0" />
+            <enum name="horizontal" value="1" />
+        </attr>
+        <attr name="endValue" format="integer" />
+        <attr name="defaultValue" format="integer" />
+        <!--中轴线颜色-->
+        <attr name="centerLineColor" format="color" />
+        <!--中轴线宽度-->
+        <attr name="centerLineWidth" format="dimension" />
+        <!--选择时间的边框颜色-->
+        <attr name="selectTimeBorderColor" format="color" />
+        <!--已选择时间颜色-->
+        <attr name="selectTimeAreaColor" format="color" />
+        <!--选择时间边框大小-->
+        <attr name="selectTimeBorderSize" format="dimension" />
+        <!--竖屏时的高度-->
+        <attr name="viewHeightVer" format="dimension" />
+        <!--横屏时的高度-->
+        <attr name="viewHeightHor" format="dimension" />
+
+    </declare-styleable>
+    <declare-styleable name="TimeRulerView">
+        <!--时间文字颜色-->
+        <attr name="rulerTextColor" format="color" />
+        <!--含有录像背景颜色-->
+        <attr name="vedioAreaColor" format="color" />
+        <!--刻度线颜色-->
+        <attr name="rulerLineColor" format="color" />
+
+
+        <!--背景颜色-->
+        <attr name="viewBackgroundColor" format="color" />
+
+        <!--时间文字大小-->
+        <attr name="rulerTextSize" format="dimension" />
+        <!--小刻度线宽度-->
+        <attr name="samllRulerLineWidth" format="dimension" />
+        <!--小刻度线高度-->
+        <attr name="samllRulerLineHeight" format="dimension" />
+        <!--大刻度线宽度-->
+        <attr name="largeRulerLineWidth" format="dimension" />
+        <!--大刻度线高度-->
+        <attr name="largeRulerLineHeight" format="dimension" />
+
+
+    </declare-styleable>
+
+</resources>
