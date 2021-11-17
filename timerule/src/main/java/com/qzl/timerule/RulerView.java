@@ -223,8 +223,8 @@ public class RulerView extends RecyclerView {
                         if (onBarMoveListener != null) {
                             onBarMoveListener.onMoveExceedStartTime();
                         }
-                        setCurrentTimeMillis(DateUtils.getTodayStart(startTimeMillis));
-                        toTodayStartPostion();
+                        //setCurrentTimeMillis(DateUtils.getTodayStart(startTimeMillis));
+                        //toTodayStartPostion();
 //                        if (onBarMoveListener != null) {
 //                            onBarMoveListener.onBarMoveFinish(DateUtils.getTodayStart(startTimeMillis));
 //                        }
@@ -234,8 +234,8 @@ public class RulerView extends RecyclerView {
                         if (onBarMoveListener != null) {
                             onBarMoveListener.onMoveExceedEndTime();
                         }
-                        setCurrentTimeMillis(DateUtils.getTodayEnd(startTimeMillis));
-                        toTodayEndPostion();
+                        //setCurrentTimeMillis(DateUtils.getTodayEnd(startTimeMillis));
+                        //toTodayEndPostion();
 //                        if (onBarMoveListener != null) {
 //                            onBarMoveListener.onBarMoveFinish(DateUtils.getTodayEnd(startTimeMillis));
 //                        }
@@ -515,6 +515,7 @@ public class RulerView extends RecyclerView {
      * 更新中心点的位置
      */
     public void updateCenteLinePostion() {
+        adapter.setCurrentTimeMillis(currentTimeMillis);
         //左边屏幕的时刻
         leftTime = this.currentTimeMillis - centerPointDuration;
         //根据左边时间计算第一个可以显示的下标

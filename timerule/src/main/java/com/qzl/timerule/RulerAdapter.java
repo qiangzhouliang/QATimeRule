@@ -30,6 +30,10 @@ public class RulerAdapter extends RecyclerView.Adapter<RulerAdapter.RulerViewHol
     private int width;
     private final AnimationSet animationSetRight;
     private final AnimationSet animationSetLeft;
+    /**
+     * 当前时间的毫秒值
+     */
+    private long currentTimeMillis;
 //    private LinearLayout.LayoutParams leftParams, rightParams;
 
     public RulerAdapter(Context context) {
@@ -75,7 +79,9 @@ public class RulerAdapter extends RecyclerView.Adapter<RulerAdapter.RulerViewHol
         animationSetLeft.setRepeatCount(30);
 
     }
-
+    public void setCurrentTimeMillis(long currentTimeMillis) {
+        this.currentTimeMillis = currentTimeMillis;
+    }
     @Override
     public RulerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new RulerViewHolder(View.inflate(context, R.layout.item_ruler, null));
@@ -98,6 +104,7 @@ public class RulerAdapter extends RecyclerView.Adapter<RulerAdapter.RulerViewHol
         holder.view.setCurTimeIndex(position - 12 * 6);
         holder.view.setScaleMode(scaleMode);
         holder.view.setVedioTimeSlot(vedioTimeSlot);
+        holder.view.setCurrentTimeMillis(currentTimeMillis);
         View view = holder.parentView;
         view.setLayoutParams(new RecyclerView.LayoutParams(itemWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
         holder.view.postInvalidate();

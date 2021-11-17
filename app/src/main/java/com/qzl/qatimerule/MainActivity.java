@@ -25,8 +25,12 @@ import com.qzl.timerule.bean.OnSelectedTimeListener;
 import com.qzl.timerule.bean.TimeSlot;
 import com.qzl.timerule.utils.CUtils;
 import com.qzl.timerule.utils.DateUtils;
+import com.qzl.timerule.utils.TimeHelper;
 
+import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -46,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        time = System.currentTimeMillis();
+        time = TimeHelper.getTimeMillis("2021-11-17 00:00:00");
         initView();
         setListener();
 //        tRuler.setCurrentTimeMillis(System.currentTimeMillis());
@@ -55,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView() {
         tRuler = (RulerView) findViewById(R.id.tr_line);
-        tRuler.setCurrentTimeMillis(time - 2 * 60 * 60 * 1000);
+        tRuler.setCurrentTimeMillis(time);
         tvProgress = (TextView) findViewById(R.id.tv_progress);
         tvTime = (TextView) findViewById(R.id.tv_time);
         llP = (FrameLayout) findViewById(R.id.ll_porental);
@@ -147,8 +151,16 @@ public class MainActivity extends AppCompatActivity {
         List<TimeSlot> times = new ArrayList<>();
 //        times.add(new TimeSlot(DateUtils.getTodayStart(System.currentTimeMillis()), DateUtils.getTodayStart(System.currentTimeMillis()) - 60 * 60 * 1000, DateUtils.getTodayStart(System.currentTimeMillis()) + 120 * 60 * 1000));
 //        times.add(new TimeSlot(DateUtils.getTodayStart(System.currentTimeMillis()), DateUtils.getTodayStart(System.currentTimeMillis()) + 3 * 60 * 60 * 1000, DateUtils.getTodayStart(System.currentTimeMillis()) + 4 * 60 * 60 * 1000));
-        times.add(new TimeSlot(DateUtils.getTodayStart(time), DateUtils.getTodayStart(System.currentTimeMillis()) + 5 * 60 * 60 * 1000, DateUtils.getTodayStart(System.currentTimeMillis()) + 7 * 60 * 60 * 1000));
-        times.add(new TimeSlot(DateUtils.getTodayStart(time - 2 * 60 * 60 * 1000), time - 2 * 60 * 60 * 1000, time));
+        //times.add(new TimeSlot(DateUtils.getTodayStart(time), DateUtils.getTodayStart(System.currentTimeMillis()) - 5 * 60 * 60 * 1000, DateUtils.getTodayStart(System.currentTimeMillis()) + 7 * 60 * 60 * 1000));
+        times.add(new TimeSlot(
+            DateUtils.getTodayStart(TimeHelper.getTimeMillis("2021-11-16 00:00:00")), TimeHelper.getTimeMillis("2021-11-16 23:00:00") , TimeHelper.getTimeMillis("2021-11-16 23:59:00")));
+        times.add(new TimeSlot(
+            DateUtils.getTodayStart(System.currentTimeMillis()),
+            TimeHelper.getTimeMillis("2021-11-17 00:00:00"),
+            TimeHelper.getTimeMillis("2021-11-17 00:10:00")));
+        times.add(new TimeSlot(DateUtils.getTodayStart(TimeHelper.getTimeMillis("2021-11-18 00:00:00")),
+            TimeHelper.getTimeMillis("2021-11-18 00:00:00"),
+            TimeHelper.getTimeMillis("2021-11-18 00:10:00")));
         Log.e("hdltag", "setListener(MainActivity.java:121):" + times);
         tRuler.setVedioTimeSlot(times);
     }

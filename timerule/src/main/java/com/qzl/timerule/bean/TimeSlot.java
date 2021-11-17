@@ -22,10 +22,15 @@ public class TimeSlot {
      */
     private long currentDayStartTimeMillis;
 
+
     public TimeSlot(long currentDayStartTimeMillis, long startTime, long endTime) {
         this.currentDayStartTimeMillis = currentDayStartTimeMillis;
         this.startTime = startTime;
         this.endTime = endTime;
+    }
+
+    public long getCurrentDayStartTimeMillis() {
+        return currentDayStartTimeMillis;
     }
 
     /**
@@ -47,6 +52,7 @@ public class TimeSlot {
         }
         return (startTime - DateUtils.getTodayStart(startTime));
     }
+
 
     /**
      * 获取结束时间
@@ -71,8 +77,8 @@ public class TimeSlot {
     @Override
     public String toString() {
         return "TimeSlot{" +
-                "startTime=" + getStartTime() + ",startTimeMillis=" + getStartTimeMillis() +
-                ", endTime=" + getEndTime() + ",endTimeMillis=" + getEndTimeMillis() +
-                '}';
+            "startTime=" + getStartTime() + ",startTimeMillis=" + getStartTimeMillis() +
+            ", endTime=" + getEndTime() + ",endTimeMillis=" + getEndTimeMillis() +
+            '}';
     }
 }

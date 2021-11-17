@@ -14,6 +14,7 @@ import com.qzl.timerule.bean.ScaleMode;
 import com.qzl.timerule.bean.TimeSlot;
 import com.qzl.timerule.utils.CUtils;
 import com.qzl.timerule.utils.DateUtils;
+import com.qzl.timerule.utils.TimeHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +56,10 @@ public class RulerItemView extends View {
     private int viewHeight = CUtils.dip2px(80);
     //除数、刻度精度
     private int divisor;
+    /**
+     * 当前时间的毫秒值
+     */
+    private long currentTimeMillis;
 
     public RulerItemView(Context context) {
         this(context, null);
@@ -132,28 +137,36 @@ public class RulerItemView extends View {
      * @param canvas
      */
     private void drawVedioArea(Canvas canvas) {
+        int startTime = timeIndex * 60 * 1000;
+        int endTime = startTime + 10 * 60 * 1000;
         for (TimeSlot timeSlot : vedioTimeSlot) {
+            //判断当前时间和视频时间是否在同一天，根据相差的天数做调整
+            long subDay = TimeHelper.getDateSubDay(
+                TimeHelper.getTimeByMillis(timeSlot.getCurrentDayStartTimeMillis()),
+                TimeHelper.getTimeByMillis(DateUtils.getTodayStart(currentTimeMillis)));
+            startTime = (int) (timeIndex * 60 * 1000 + subDay*(24 * 60 * 60 * 1000));
+            endTime = startTime + 10 * 60 * 1000;
             //1、首先判断是否全部包含了本时间段
-            boolean isContainTime = DateUtils.isContainTime(timeSlot, timeIndex * 60 * 1000, timeIndex * 60 * 1000 + 10 * 60 * 1000);
-            boolean isLeftTime = DateUtils.isCurrentTimeArea(timeSlot.getStartTimeMillis(), timeIndex * 60 * 1000, timeIndex * 60 * 1000 + 10 * 60 * 1000);
-            boolean isRightTime = DateUtils.isCurrentTimeArea(timeSlot.getEndTimeMillis(), timeIndex * 60 * 1000, timeIndex * 60 * 1000 + 10 * 60 * 1000);
+            boolean isContainTime = DateUtils.isContainTime(timeSlot, startTime, endTime);
+            boolean isLeftTime = DateUtils.isCurrentTimeArea(timeSlot.getStartTimeMillis(), startTime, endTime);
+            boolean isRightTime = DateUtils.isCurrentTimeArea(timeSlot.getEndTimeMillis(), startTime, endTime);
             if (isContainTime) {//包含所有（画整个item）
                 vedioAreaRect.set(0, 0, getWidth(), viewHeight - textSize * 2);
                 canvas.drawRect(vedioAreaRect, vedioAreaPaint);
 //                return;
             } else if (isLeftTime && isRightTime) {//两端都在（画左边时刻到右边时刻）
-                float distanceX1 = (timeSlot.getStartTimeMillis() - timeIndex * 60 * 1000) * (getWidth() / (10 * 60 * 1000f));
-                float distanceX2 = (timeSlot.getEndTimeMillis() - timeIndex * 60 * 1000) * (getWidth() / (10 * 60 * 1000f));
+                float distanceX1 = (timeSlot.getStartTimeMillis() - startTime) * (getWidth() / (10 * 60 * 1000f));
+                float distanceX2 = (timeSlot.getEndTimeMillis() - startTime) * (getWidth() / (10 * 60 * 1000f));
                 vedioAreaRect.set(distanceX1, 0, distanceX2, viewHeight - textSize * 2);
                 canvas.drawRect(vedioAreaRect, vedioAreaPaint);
 //                return;
             } else if (isLeftTime) {//只有左边在（左边时刻开始到item结束都画）
-                float distanceX = (timeSlot.getStartTimeMillis() - timeIndex * 60 * 1000) * (getWidth() / (10 * 60 * 1000f));
+                float distanceX = (timeSlot.getStartTimeMillis() - startTime) * (getWidth() / (10 * 60 * 1000f));
                 vedioAreaRect.set(distanceX, 0, getWidth(), viewHeight - textSize * 2);
                 canvas.drawRect(vedioAreaRect, vedioAreaPaint);
 //                return;
             } else if (isRightTime) {//只有右边在（画从头开始到右边时刻）
-                float distanceX = (timeSlot.getEndTimeMillis() - timeIndex * 60 * 1000) * (getWidth() / (10 * 60 * 1000f));
+                float distanceX = (timeSlot.getEndTimeMillis() - startTime) * (getWidth() / (10 * 60 * 1000f));
                 vedioAreaRect.set(0, 0, distanceX, viewHeight - textSize * 2);
                 canvas.drawRect(vedioAreaRect, vedioAreaPaint);
 //                return;
@@ -210,7 +223,9 @@ public class RulerItemView extends View {
             }
         }
     }
-
+    public void setCurrentTimeMillis(long currentTimeMillis) {
+        this.currentTimeMillis = currentTimeMillis;
+    }
     /**
      * 画上下两条线
      *
